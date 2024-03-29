@@ -25,6 +25,16 @@
 - react-icons 설치 : yarn add react-icons
 - not-found.tsx 생성
 
+# 4. 모킹 데이터 생성하기
+## 1) Prisma 문법 알아보기
+- Migration : 데이터베이스 스키마 변경을 추적하고 적용하는데 사용
+- npx prisma migrate dev --name init
+- npx prisma db seed : 데이터페이스 시드 적용
+## 2) Prisma로 Mock 데이터 생성하기
+- pacage.json 에 ```"prisma": {
+  "seed": "ts-node --compiler-options {\"module\":\"CommonJS\"} prisma/seed.ts"
+}```  추가
+- yarn add @faker-js/faker --dev
 
 
 

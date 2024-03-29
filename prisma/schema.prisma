@@ -43,7 +43,7 @@ model Room{
   hasWifi           Boolean @default(false)
   hasBarbeque       Boolean @default(false)
   hasFreeParking    Boolean @default(false)
-  userId            String
-  user              User    @relation(fields: [userId], references: [id],onDelete:Cascade)
+  userId            String?
+  user              User?    @relation(fields: [userId], references: [id],onDelete:Cascade)
   @@index([userId])
 }
