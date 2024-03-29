@@ -36,6 +36,9 @@
 }```  추가
 - yarn add @faker-js/faker --dev
 
+# 5. 숙박 예약 플랫폼 메인 페이지 개발하기
+
+
 
 
 

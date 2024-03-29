@@ -1,3 +1,4 @@
+import Link from 'next/link'
 import React from 'react'
 
 const Footer = () => {
@@ -11,24 +12,19 @@ const Footer = () => {
         </div>
         <ul className="flex flex-wrap items-center text-sm text-gray-800 mt-2 sm:mt-0 gap-4 md:gap-6">
           <li>
-            <a href="#" className="hover:underline">
-              개인 정보 처리 방침
-            </a>
+            <Link href="/users/login" className="hover:underline">
+              로그인
+            </Link>
           </li>
           <li>
-            <a href="#" className="hover:underline">
-              이용 약관
-            </a>
+            <Link href="/users/signIn" className="hover:underline">
+              회원가입
+            </Link>
           </li>
           <li>
-            <a href="#" className="hover:underline">
-              공지 사항
-            </a>
-          </li>
-          <li>
-            <a href="#" className="hover:underline">
-              회사 세부 정보
-            </a>
+            <Link href="/faqs" className="hover:underline">
+              FAQ
+            </Link>
           </li>
         </ul>
       </div>
