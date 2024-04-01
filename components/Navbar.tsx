@@ -13,6 +13,7 @@ import dayjs from 'dayjs'
 import 'dayjs/locale/ko'
 import Calendar from 'react-calendar'
 import { filter } from 'lodash'
+import { DetailFilterType, FilterProps } from '@/interface'
 
 const menus = [
   { id: 1, title: '로그인', url: '/users/login' },
@@ -20,13 +21,7 @@ const menus = [
   { id: 3, title: 'FAQ', url: '/faqs' },
 ]
 
-type DetailFilterType = 'location' | 'checkIn' | 'checkOut' | 'guest'
-interface FilterProps {
-  location: string
-  checkIn: string
-  checkOut: string
-  guest: number
-}
+
 
 const Navbar = () => {
   const [showMenu, setShowMenu] = useState(false)

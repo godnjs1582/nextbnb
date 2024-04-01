@@ -1,8 +1,14 @@
+'use client'
 import Footer from '@/components/Footer'
 import Navbar from '@/components/Navbar'
 import React from 'react'
+import { RecoilRoot } from 'recoil'
 interface Props {
   children?: React.ReactNode
+}
+
+export const NextProvider = ({ children }: Props) => {
+  return <RecoilRoot>{children}</RecoilRoot>
 }
 
 const NextLayout = ({ children }: Props) => {
