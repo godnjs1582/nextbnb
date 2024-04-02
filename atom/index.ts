@@ -1,8 +1,8 @@
 import { DetailFilterType, FilterProps } from '@/interface'
 import { atom } from 'recoil'
 
-export const detaulFilterState = atom<DetailFilterType | null>({
-  key: 'defailFilter',
+export const detailFilterState = atom<DetailFilterType | null>({
+  key: 'detailFilter',
   default: null,
 })
 
