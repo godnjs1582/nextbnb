@@ -5,11 +5,9 @@ import { RxDividerVertical } from 'react-icons/rx'
 import { AiOutlineSearch } from 'react-icons/ai'
 import { AiOutlineMenu } from 'react-icons/ai'
 import { AiOutlineUser } from 'react-icons/ai'
-
 import { useRouter } from 'next/navigation'
 import cn from 'classnames'
 import 'dayjs/locale/ko'
-import { DetailFilterType, FilterProps } from '@/interface'
 import Link from 'next/link'
 import SearchFilter from './Filter'
 import { useRecoilState, useRecoilValue } from 'recoil'
@@ -21,7 +19,7 @@ const menus = [
   { id: 3, title: 'FAQ', url: '/faqs' },
 ]
 
-const Navbar = () => {
+export default function Navbar() {
   const [showMenu, setShowMenu] = useState(false)
   const [showFilter, setShowFilter] = useState(false)
   const [detailFilter, setDetailFilter] = useRecoilState(detailFilterState)
@@ -31,7 +29,7 @@ const Navbar = () => {
   return (
     <nav
       className={cn(
-        'border border-b-gray w-full shadow-sm p-4 sm:px-10 flex align-middle justify-between items-center fixed top-0 bg-white',
+        'h-20 z-10 border border-b-gray w-full shadow-sm p-4 sm:px-10 flex align-middle justify-between items-center fixed top-0 bg-white',
         {
           '!h-44': showFilter === true,
           '!items-start': showFilter === true,
@@ -208,8 +206,3 @@ const Navbar = () => {
     </nav>
   )
 }
-
-export default Navbar
-
-
-

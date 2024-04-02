@@ -37,7 +37,62 @@
 - yarn add @faker-js/faker --dev
 
 # 5. 숙박 예약 플랫폼 메인 페이지 개발하기
+## 1) date fetching
+### (1) Next.js 12
+- getStaticProps(SSG)
+- getServerSideProps(SSR)
+- getStaticProps  + revalidate(ISR)
+### (2) Next.js 13
+- fetch(Web API) 함수와 Cashing, Revalidating 정책을 사용해서 SSG, SSR, ISR 요청을 보낼 수 있음
+- Next.js 13부터는 fetch Web API를 사용해서 데이터를 가져올 수 있음(App Router에서만 가능)
+- 캐싱 및 revalidation 설정을 직접 할 수 있으며, 각 설정에 따라 SSR, SSG, ISR 구현 가능
+- Server Component 내부에서 async/await 를 함께 사용해서 fetch API 사용
+```
+async function getData(){
+  const res=await fetch("https://api.example.com/")
 
+  if(!res.ok){
+    throw new Erro("Failed to fetch data")
+  }
+
+  return res.json()
+}
+
+export default async function Page(){
+ const res=await getData();
+ return <main></main>
+}
+```
+- a. SSR
+- SSR(Server-Side Rendering) : 클라이언트가 요청할 때마다 서버에서 페이지를 동적으로 렌더링하여 HTML을 생성하고 클라이언트에게 전달하는 방법
+- 캐싱정책 : no-store
+```async function getData(){
+  const res=await fetch("https://api.example.com/...",{cache:"no-store"});
+
+  if(!res.ok){
+    throw new Error("Failed to fetch data")
+  }
+  return res.json();
+}```
+
+- b. SSG
+- SSG(Static Site Generation) : 빌드 시간에 페이지를 렌더링하여 정적인 HTML 파일을 생성하는 방법
+- 캐싱정책 : force-cache(디폴트 값, 생략 가능)
+- ```
+async function getData(){
+  const res=await fetch("https://api.example.com/...",{
+    cache:"force-cache"
+  })
+  if(!res.ok){
+    throw new Error("Failed to fetch data")
+  }
+
+  return res.json()
+}
+```
+- c. ISR
+- SSG의 한 변형으로 페이지는 빌드 시간에 정적으로 생성되지만 특정 갱신 주기 동안에는 이전에 생성된 페이지를 서빙하고, 그 주기가 지나면 새로운 페이지를 생성하는 방법
+- revalidate 옵션 사용
 
 
 
