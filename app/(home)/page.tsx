@@ -36,6 +36,10 @@ export default function Home() {
       lastPage?.data?.length > 0 ? lastPage.page + 1 : undefined,
   })
 
+  if (isError) {
+    throw new Error('Room API Fetching Error')
+  }
+
   useEffect(() => {
     let timerId: NodeJS.Timeout | undefined
 
@@ -43,6 +47,9 @@ export default function Home() {
       timerId = setTimeout(() => {
         fetchNextPage()
       }, 500)
+    }
+    return () => {
+      clearTimeout(timerId)
     }
   }, [isPageEnd, hasNextPage, fetchNextPage])
 
