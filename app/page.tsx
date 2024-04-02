@@ -1,41 +1,69 @@
 'use client'
 import CategoryList from '@/components/CategoryList'
-import Loader from '@/components/Loader'
+import { Loader, LoaderGrid } from '@/components/Loader'
 import { GridLayout, RoomItem } from '@/components/RoomItem'
 import { RoomType } from '@/interface'
-import { useQuery } from 'react-query'
+import { useQuery, useInfiniteQuery } from 'react-query'
+import axios from 'axios'
+import React, { useEffect, useRef, useCallback } from 'react'
+import { useIntersectionObserver } from '@/hooks/useIntersectionObserver'
 
 export default function Home() {
-  const fetchRooms = async () => {
-    const data = await fetch('/api/rooms')
-    return data.json()
+  const ref = useRef<HTMLDivElement | null>(null)
+  const pageRef = useIntersectionObserver(ref, {})
+  const isPageEnd = !!pageRef?.isIntersecting
+
+  const fetchRooms = async ({ pageParam = 1 }) => {
+    console.log({ pageParam })
+    const { data } = await axios('/api/rooms?page=' + pageParam, {
+      params: { limit: 12, page: pageParam },
+    })
+    return data
   }
 
-  const { data, isError, isLoading } = useQuery('rooms', fetchRooms)
+  const {
+    data: rooms,
+    isFetching,
+    fetchNextPage,
+    hasNextPage,
+    error,
+    isFetchingNextPage,
+    status,
+    isError,
+    isLoading,
+  } = useInfiniteQuery('rooms', fetchRooms, {
+    getNextPageParam: (lastPage, page) =>
+      lastPage?.data?.length > 0 ? lastPage.page + 1 : undefined,
+  })
 
-  if (isLoading) {
-    return <Loader className="mt-60 mb-40" />
-  }
+  useEffect(() => {
+    let timerId: NodeJS.Timeout | undefined
+
+    if (isPageEnd && hasNextPage) {
+      timerId = setTimeout(() => {
+        fetchNextPage()
+      }, 500)
+    }
+  }, [isPageEnd, hasNextPage, fetchNextPage])
 
   return (
     <>
       <CategoryList />
       <GridLayout>
-        {data?.map((room: RoomType) => <RoomItem room={room} key={room.id} />)}
+        {isLoading || isFetching ? (
+          <LoaderGrid />
+        ) : (
+          rooms?.pages?.map((page, index) => (
+            <React.Fragment key={index}>
+              {page?.data.map((room: RoomType) => (
+                <RoomItem room={room} key={room.id} />
+              ))}
+            </React.Fragment>
+          ))
+        )}
       </GridLayout>
+      {(isFetching || hasNextPage || isFetchingNextPage) && <Loader />}
+      <div className="w-full touch-none h-10 mb-10" ref={ref} />
     </>
   )
-}
-
-async function getRooms() {
-  const fetchRooms = async () => {
-    const data = await fetch('/api/rooms')
-    return data.json()
-  }
-
-  if (!res.ok) {
-    throw new Error('failed to fetch')
-  }
-
-  return res.json()
 }
