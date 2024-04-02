@@ -3,12 +3,19 @@ import Footer from '@/components/Footer'
 import Navbar from '@/components/Navbar'
 import React from 'react'
 import { RecoilRoot } from 'recoil'
+import { QueryClient, QueryClientProvider } from 'react-query'
+
+const queryClient = new QueryClient()
 interface Props {
   children?: React.ReactNode
 }
 
 export const NextProvider = ({ children }: Props) => {
-  return <RecoilRoot>{children}</RecoilRoot>
+  return (
+    <RecoilRoot>
+      <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
+    </RecoilRoot>
+  )
 }
 
 const NextLayout = ({ children }: Props) => {
